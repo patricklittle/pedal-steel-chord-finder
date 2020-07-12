@@ -1,21 +1,8 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core';
-import React from 'react';
+import { jsx } from '@emotion/core';
 import Note from './Note';
 
-interface FretNotes {
-  "name": string;
-  "note": string;
-  "midi": number;
-}
-
-interface FretBoard {
-  "fretNumber": number;
-  "fretNotes": Array<FretNotes>;
-}
-
-const Fret = ({fretNumber, fretNotes}:FretBoard) => {
-
+const Fret = ({fretNumber, fretNotes}) => {
   const fretWidth = fretNumber * 2.5 + 60
 
   return (
@@ -36,7 +23,9 @@ const Fret = ({fretNumber, fretNotes}:FretBoard) => {
         fontSize: 10,
         top: 4,
         left: 4
-      }}>{fretNumber}</div>
+      }}>
+        {fretNumber}
+      </div>
       {fretNotes.map((props, i) => <Note key={i} string={i + 1} {...props} />)}
     </div>
   )

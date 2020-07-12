@@ -2,24 +2,19 @@
 import { jsx } from '@emotion/core'
 import { PolySynth } from 'tone';
 
-interface FretNotes {
-  "string": number;
-  "name": string;
-  "note": string;
-}
-
-const Note = ({string, name, note}: FretNotes) => {
+const Note = ({string, name, note}) => {
   const synth = new PolySynth().toMaster();
 
 
   const handleClick = () => {
-    synth.triggerAttackRelease("C4", "8n")
+    synth.triggerAttackRelease(note, "8n")
   }
 
   const StringGauge = string * 0.5 + 1;
 
   return (
     <button
+    onClick={handleClick}
       css={{
         position: 'relative',
         cursor: 'pointer',
@@ -33,8 +28,12 @@ const Note = ({string, name, note}: FretNotes) => {
         backgroundImage: 'linear-gradient(0deg,#fff,rgba(250,250,250,0.3))',
         backgroundPositionY: '50%',
         backgroundSize: `100%  ${StringGauge}px`,
+        outline: 'none',
         '&:hover': {
-          background: '#303236'
+          background: '#303236',
+          'span': {
+            background: '#96C76F'
+          }
         }
       }}
     >
