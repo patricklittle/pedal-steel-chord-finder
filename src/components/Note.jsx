@@ -1,13 +1,21 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
-import { PolySynth } from 'tone';
+import { useDispatch } from "react-redux";
+import { addNote, remoteNote } from '../actions'
+import { useSelector } from 'react-redux'
 
-const Note = ({string, name, note}) => {
-  const synth = new PolySynth().toMaster();
-
+const Note = (props) => {
+  const { string, name, note } = props
+  const dispatch = useDispatch();
+  const selectedNotes = useSelector((state) => state.notes.selected)
+  const noteSelected = selectedNotes.includes(name)
 
   const handleClick = () => {
-    synth.triggerAttackRelease(note, "8n")
+    if(noteSelected) {
+      dispatch(remoteNote(name))
+    } else {
+      dispatch(addNote({ string, name, note }))
+    }
   }
 
   const StringGauge = string * 0.5 + 1;
@@ -30,9 +38,8 @@ const Note = ({string, name, note}) => {
         backgroundSize: `100%  ${StringGauge}px`,
         outline: 'none',
         '&:hover': {
-          background: '#303236',
           'span': {
-            background: '#96C76F'
+            background: '#BDD684'
           }
         }
       }}
@@ -43,7 +50,7 @@ const Note = ({string, name, note}) => {
           borderRadius: 22,
           height: 20,
           width: 20,
-          background: "rgba(240, 240, 240, 0.9)",
+          background: noteSelected ? "#A9CF54" : "#B9B0AB",
           color: "rgb(0, 0, 0)",
           display: "inline-flex",
           justifyContent: "center",
@@ -54,5 +61,4 @@ const Note = ({string, name, note}) => {
     </button>
   )
 }
-
-export default Note;
+export default Note

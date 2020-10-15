@@ -1,19 +1,55 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
-import FretBoard from './components/FretBoard';
+// import {useEffect} from 'react'
+import { connect } from 'react-redux'
+import { useDispatch } from "react-redux";
+import { addFretboard } from './actions'
+import { E9 } from './store/tunings'
+import { generateFretBoard } from './notesGenerator';
 
-function App() {
+import FretBoard from './components/FretBoard';
+import SelectedNotes from './components/SelectedNotes'
+import ChordInput from './components/ChordInput'
+import PedalControls from './components/PedalControls';
+
+// import { PolySynth } from 'tone'
+
+const App = () => {
+  const dispatch = useDispatch()
+  // const synth = new PolySynth().toMaster();
+
+  const allNotes = generateFretBoard(E9)
+  dispatch(addFretboard(allNotes))
+
+  // const handlePlay = () => {
+  //   // synth.triggerAttackRelease(note, "8n")
+  // }
+
+  // useEffect(() => {
+  //   const allNotes = generateFretBoard(E9)
+  //   dispatch(addFretboard(allNotes))
+  // }, [dispatch]);
+
   return (
-    <div css={{
-      background: '#0c0b0d',
-      height: '100vh',
-      width: '100vw',
-      padding: 20,
-      overflow: 'hidden'
-    }}>
-      <FretBoard/>
+    <div css={{ padding: 40}}>
+      <div>
+        <h1>Pedal Steel Chord Finder</h1>
+      </div>
+
+      <div>
+        <FretBoard />
+        <div css={{display: 'flex', padding: '40px 0'}}>
+          <div css={{marginRight: 40}}>
+            <PedalControls />
+          </div>
+          <div css={{marginRight: 40}}>
+            <ChordInput />
+          </div>
+          <SelectedNotes/>
+        </div>
+      </div>
     </div>
   );
 }
 
-export default App;
+export default connect()(App)
